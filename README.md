@@ -8,8 +8,8 @@ Siga estas etapas para configurar o ambiente de desenvolvimento:
 
 1 - Clone o Repositório
 ```bash
-  git clone https://github.com/seu-usuario/seu-repositorio.git
-  cd seu-repositorio
+  git clone https://github.com/rafaelmeroladev/picpay-simplificado.git
+  cd picpay-simplificado
 ```
 2 - Construa e Inicie os Contêineres do Docker
 ```bash
