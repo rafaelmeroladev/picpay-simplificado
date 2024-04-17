@@ -1,66 +1,214 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PicPay Simplificado - API Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é uma implementação simplificada de uma plataforma de pagamentos, permitindo depósitos e transferências de dinheiro entre usuários e lojistas.
 
-## About Laravel
+## Instalação e Configuração
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Siga estas etapas para configurar o ambiente de desenvolvimento:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1 - Clone o Repositório
+```bash
+  git clone https://github.com/seu-usuario/seu-repositorio.git
+  cd seu-repositorio
+```
+2 - Construa e Inicie os Contêineres do Docker
+```bash
+  docker-compose up --build
+```
+Isso irá configurar e iniciar todos os serviços necessários, incluindo o servidor web e o banco de dados.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+3 - Configuração Adicional do Laravel
+Após os contêineres estarem rodando, você pode precisar executar migrações e qualquer outra configuração inicial.
+```bash
+  docker-compose exec app php artisan migrate
+```    
 
-## Learning Laravel
+## Documentação da API
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### Autenticação
+A autenticação é realizada via tokens JWT. Utilize o endpoint de login para obter o token, que deve ser incluído no cabeçalho das requisições que requerem autenticação.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Endpoints
+#### Registro de Usuário
+``` http
+ POST /api/register
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Autenticação Necessária: Não
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+|name: String | Obrigatório | Nome do Usuário/Mercador
+email: String | Obrigatório | Email do Usuário/Mercador
+password: String | Obrigatório | Senha do Usuário/Mercador
+is_merchant: Boolean | Obrigatório | Se é mercador = true |
 
-### Premium Partners
+#### Exemplo de Requisição:
+``` curl
+curl -X POST http://localhost:8000/api/register \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "securePassword123",
+    "is_merchant": false
+  }'
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```
+#### Resposta de Sucesso:
 
-## Contributing
+Código: 201 CREATED
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Response:
+``` http
+{
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "is_merchant": false
+  },
+  "token": "jwt.token.here"
+}
 
-## Code of Conduct
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### Login
 
-## Security Vulnerabilities
+```http
+  POST /api/login
+```
+Autenticação Necessária: Não
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+|email: String | Obrigatório | Email do Usuário/Mercador
+password: String | Obrigatório | Senha do Usuário/Mercador |
 
-## License
+#### Exemplo de Requisição:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+``` http
+curl -X POST http://localhost:8000/api/login \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email": "john@example.com",
+    "password": "securePassword123"
+  }'
+```
+#### Resposta de Sucesso:
+Código: 200 OK
+
+``` http
+{
+  "token": "jwt.token.here"
+}
+```
+
+#### Transferência de Dinheiro
+
+``` http
+POST /api/transfer
+```
+Autenticação Necessária: Sim
+
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+|value: Decimal | Obrigatório | Valor Transferencia
+payer: Integer | Obrigatório | ID do pagador (usuário autenticado) 
+payee: Integer | Obrigatório | ID do recebedor|
+
+#### Exemplo de Requisição:
+``` curl
+curl -X POST http://localhost:8000/api/transfer \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer {token}' \
+  -d '{
+    "value": 100.0,
+    "payer": 1,
+    "payee": 2
+  }'
+```
+#### Resposta de Sucesso:
+Código: 201 CREATED
+
+``` http
+{
+  "message": "Transfer successful",
+  "transaction": {
+    "id": 123,
+    "value": 100.0,
+    "payer_id": 1,
+    "payee_id": 2
+  }
+}
+```
+
+## Endpoints da API
+
+Aqui estão os principais endpoints disponíveis na API. Você pode utilizar curl para fazer requisições a esses endpoints.
+
+Registrar Usuário
+POST /api/register
+Cria um novo usuário.
+
+```bash
+  curl -X POST http://localhost:8000/api/register \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "securePassword123",
+    "is_merchant": false
+}'
+
+```
+
+Login de Usuário
+POST /api/login
+Autentica um usuário.
+
+```bash
+  curl -X POST http://localhost:8000/api/login \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email": "john@example.com",
+    "password": "securePassword123"
+}'
+
+```
+
+Transferência de Dinheiro
+POST /api/transfer
+Realiza uma transferência de dinheiro de um usuário para outro.
+
+```bash
+  curl -X POST http://localhost:8000/api/transfer \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer {token}' \
+  -d '{
+    "value": 100,
+    "payer": 1,
+    "payee": 2
+}'
+
+```
+
+Consultar Usuário
+GET /api/user
+Retorna informações do usuário autenticado.
+
+```bash
+  curl -X GET http://localhost:8000/api/user \
+  -H 'Authorization: Bearer {token}'
+
+```
+
+## Considerações Finais
+
+- Utilize a autenticação JWT para todas as requisições após o login.
+- Assegure que os dados enviados nas requisições estejam conforme os formatos requeridos para evitar erros de validação.
+
+## Dúvidas e Sugestões
+
+Por gentileza enviar para [rafamerola@gmail.com].
