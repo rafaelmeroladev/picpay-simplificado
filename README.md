@@ -8,19 +8,25 @@ Siga estas etapas para configurar o ambiente de desenvolvimento:
 
 1 - Clone o Repositório
 ```bash
+
   git clone https://github.com/rafaelmeroladev/picpay-simplificado.git
   cd picpay-simplificado
+
 ```
 2 - Construa e Inicie os Contêineres do Docker
 ```bash
+
   docker-compose up --build
+
 ```
 Isso irá configurar e iniciar todos os serviços necessários, incluindo o servidor web e o banco de dados.
 
 3 - Configuração Adicional do Laravel
 Após os contêineres estarem rodando, você pode precisar executar migrações e qualquer outra configuração inicial.
 ```bash
+
   docker-compose exec app php artisan migrate
+
 ```    
 
 ## Documentação da API
@@ -31,7 +37,9 @@ A autenticação é realizada via tokens JWT. Utilize o endpoint de login para o
 ### Endpoints
 #### Registro de Usuário
 ``` http
+
  POST /api/register
+
 ```
 
 Autenticação Necessária: Não
@@ -77,7 +85,9 @@ Response:
 #### Login
 
 ```http
+
   POST /api/login
+
 ```
 Autenticação Necessária: Não
 
@@ -89,12 +99,14 @@ password: String | Obrigatório | Senha do Usuário/Mercador |
 #### Exemplo de Requisição:
 
 ``` http
+
 curl -X POST http://localhost:8000/api/login \
   -H 'Content-Type: application/json' \
   -d '{
     "email": "john@example.com",
     "password": "securePassword123"
   }'
+  
 ```
 #### Resposta de Sucesso:
 Código: 200 OK
