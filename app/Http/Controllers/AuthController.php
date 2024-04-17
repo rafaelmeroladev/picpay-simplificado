@@ -1,5 +1,7 @@
 <?php
-
+/**
+Dev by Rafael Alves Merola
+**/
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
